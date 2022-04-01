@@ -37,51 +37,51 @@ resource "aws_sns_topic_subscription" "subscription" {
 }
 
 
-// locals {
-//   queue_prefixes = [
-//       "queue_Prefix_1",
-//       "queue_Prefix_2",
-//   ]
-// }
+locals {
+  queue_prefixes = [
+      "queue_Prefix_1",
+      "queue_Prefix_2",
+  ]
+}
 
-// module "sqs" {
-//   source = "./../../"
+module "sqs" {
+  source = "./../../"
 
-//   for_each = toset(local.queue_prefixes)
+  for_each = toset(local.queue_prefixes)
 
-//   name        = each.key
-//   environment = "dev"
-//   label_order = ["name", "environment"]
+  name        = each.key
+  environment = "dev"
+  label_order = ["name", "environment"]
 
-//   enabled                   = true
-//   delay_seconds             = 90
-//   max_message_size          = 2048
-//   message_retention_seconds = 86400
-//   receive_wait_time_seconds = 10
-//   policy                    = data.aws_iam_policy_document.document.json
-// }
+  enabled                   = true
+  delay_seconds             = 90
+  max_message_size          = 2048
+  message_retention_seconds = 86400
+  receive_wait_time_seconds = 10
+  policy                    = data.aws_iam_policy_document.document.json
+}
 
-// data "aws_iam_policy_document" "document" {
-//   version = "2012-10-17"
-//   statement {
-//     sid    = "First"
-//     effect = "Allow"
-//     principals {
-//       type        = "AWS"
-//       identifiers = ["*"]
-//     }
-//     actions = ["sqs:SendMessage"]
-//     resources = [
-//       format("arn:aws:sqs:us-east-1:%s:test-clouddrove-sqs", data.aws_caller_identity.current.account_id)
-//     ]
-//   }
-// }
+data "aws_iam_policy_document" "document" {
+  version = "2012-10-17"
+  statement {
+    sid    = "First"
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    actions = ["sqs:SendMessage"]
+    resources = [
+      format("arn:aws:sqs:us-east-1:%s:test-clouddrove-sqs", data.aws_caller_identity.current.account_id)
+    ]
+  }
+}
 
-// resource "aws_sns_topic_subscription" "subscription" {
-//   for_each  = toset(local.topicARNs) ##toset(values(aws_sns_topic.arquivos)[*].arn)
-//   protocol  = "sqs"
-//   endpoint = module.sqs.queue_prefixes
-//   #endpoint  = aws_sqs_queue.queue.arn
-//   topic_arn = each.value
-//   depends_on = [aws_sns_topic.arquivos]
-// }
+resource "aws_sns_topic_subscription" "subscription" {
+  for_each  = toset(local.topicARNs) ##toset(values(aws_sns_topic.arquivos)[*].arn)
+  protocol  = "sqs"
+  endpoint = module.sqs.queue_prefixes
+  #endpoint  = aws_sqs_queue.queue.arn
+  topic_arn = each.value
+  depends_on = [aws_sns_topic.arquivos]
+}
