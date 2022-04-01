@@ -16,34 +16,34 @@ resource "aws_dynamodb_table" "int-rede-table" {
     type = "S"
   }
 
-//   attribute {
-//     name = "FILE_TYPE"
-//     type = "S"
-//   }
-//   attribute {
-//     name = "UPDATED_AT"
-//     type = "S"
-//   }
+  attribute {
+    name = "FILE_TYPE"
+    type = "S"
+  }
+  attribute {
+    name = "UPDATED_AT"
+    type = "S"
+  }
   attribute {
     name = "PART_NUMBER"
     type = "N"
   }
-//   attribute {
-//     name = "FILE_PARTS"
-//     type = "N"
-//   }
-//   attribute {
-//     name = "STATUS"
-//     type = "S"
-//   }
-//   attribute {
-//     name = "STATUS_DESC"
-//     type = "S"
-//   }
-//   attribute {
-//     name = "PAYLOAD"
-//     type = "B"
-//   }
+  attribute {
+    name = "FILE_PARTS"
+    type = "N"
+  }
+  attribute {
+    name = "STATUS"
+    type = "S"
+  }
+  attribute {
+    name = "STATUS_DESC"
+    type = "S"
+  }
+  attribute {
+    name = "PAYLOAD"
+    type = "B"
+  }
   ttl {
     attribute_name = "TimeToExist"
     enabled        = false
